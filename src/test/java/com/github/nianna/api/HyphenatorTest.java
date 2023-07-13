@@ -9,7 +9,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class HyphenatorTest {
 
-    Hyphenator hyphenator = new Hyphenator(TestUtil.loadPlPatterns());
+    HyphenatorProperties hyphenatorProperties = new HyphenatorProperties(1, 2);
+
+    Hyphenator hyphenator = new Hyphenator(TestUtil.loadPlPatterns(), hyphenatorProperties);
 
     @Test
     void shouldHyphenateSingleToken() {
@@ -18,6 +20,27 @@ class HyphenatorTest {
         List<HyphenatedToken> tokens = result.hyphenatedTokens();
         assertEquals(1, tokens.size());
         assertEquals(new HyphenatedToken("aligator", List.of(1,3,5)), tokens.get(0));
+    }
+
+    @Test
+    void shouldHyphenateUsingDefaultSettings() {
+        Hyphenator hyphenator = new Hyphenator(TestUtil.loadPlPatterns());
+        HyphenatedText result = hyphenator.hyphenateText("aligator");
+        assertEquals("ali-ga-tor", result.read());
+        List<HyphenatedToken> tokens = result.hyphenatedTokens();
+        assertEquals(1, tokens.size());
+        assertEquals(new HyphenatedToken("aligator", List.of(3,5)), tokens.get(0));
+    }
+
+    @Test
+    void shouldHyphenateSingleTokenRespectingMinPrefixAndSuffixLengths() {
+        HyphenatorProperties customProperties = new HyphenatorProperties(2, 4);
+        Hyphenator customizedHyphenator = new Hyphenator(TestUtil.loadPlPatterns(), customProperties);
+        HyphenatedText result = customizedHyphenator.hyphenateText("aligator");
+        assertEquals("ali-gator", result.read());
+        List<HyphenatedToken> tokens = result.hyphenatedTokens();
+        assertEquals(1, tokens.size());
+        assertEquals(new HyphenatedToken("aligator", List.of(3)), tokens.get(0));
     }
 
     @Test
@@ -45,7 +68,7 @@ class HyphenatorTest {
 
     @Test
     void shouldHyphenateMultiTokenTextWithCustomTokenSeparator() {
-        Hyphenator hyphenator = new Hyphenator(TestUtil.loadPlPatterns(), "|");
+        Hyphenator hyphenator = new Hyphenator(TestUtil.loadPlPatterns(), hyphenatorProperties, "|");
         HyphenatedText result = hyphenator.hyphenateText("Aligator|był|bardzo|głodny");
         assertEquals("A-li-ga-tor był bar-dzo głod-ny", result.read());
         List<HyphenatedToken> tokens = result.hyphenatedTokens();

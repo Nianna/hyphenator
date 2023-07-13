@@ -1,5 +1,7 @@
 package com.github.nianna.internal;
 
+import com.github.nianna.api.HyphenatorProperties;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,8 +18,11 @@ public class HyphenIndexFinder {
 
     private final PatternCollection patternCollection;
 
-    public HyphenIndexFinder(List<String> patterns) {
+    private final HyphenatorProperties hyphenatorProperties;
+
+    public HyphenIndexFinder(List<String> patterns, HyphenatorProperties hyphenatorProperties) {
         this.patternCollection = new PatternCollection(patterns);
+        this.hyphenatorProperties = hyphenatorProperties;
     }
 
     public List<Integer> findIndexes(String token) {
@@ -36,7 +41,7 @@ public class HyphenIndexFinder {
         String normalizedToken = token.toLowerCase(Locale.ROOT);
         int maxPatternLength = patternCollection.getMaxPatternLength();
         Map<Integer, List<String>> matchedPatternsAtIndexes = matchedPatternsAtIndexes(normalizedToken, maxPatternLength);
-        Map<Integer, Integer> maxPrioritiesAtIndexes = mergeProrities(matchedPatternsAtIndexes);
+        Map<Integer, Integer> maxPrioritiesAtIndexes = mergePriorities(matchedPatternsAtIndexes);
         return getIndexesWithOddPriorities(token, maxPrioritiesAtIndexes);
     }
 
@@ -75,7 +80,7 @@ public class HyphenIndexFinder {
         return result;
     }
 
-    private Map<Integer, Integer> mergeProrities(Map<Integer, List<String>> matchedPatternsAtIndexes) {
+    private Map<Integer, Integer> mergePriorities(Map<Integer, List<String>> matchedPatternsAtIndexes) {
         return matchedPatternsAtIndexes.entrySet().stream()
                 .flatMap(entry ->
                         entry.getValue().stream()
@@ -88,8 +93,8 @@ public class HyphenIndexFinder {
         return maxPrioritiesAtIndexes.entrySet().stream()
                 .filter(entry -> isOdd(entry.getValue()))
                 .map(Map.Entry::getKey)
-                .filter(index -> index < token.length())
-                .filter(index -> index > 0);
+                .filter(index -> index <= token.length() - hyphenatorProperties.getMinSuffixLength())
+                .filter(index -> index >= hyphenatorProperties.getMinPrefixLength());
     }
 
     private List<String> append(List<String> collector, String newValue) {

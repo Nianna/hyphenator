@@ -23,16 +23,31 @@ package io.github.nianna.api;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Representation of the hyphenated text.
+ *
+ * Contains list of {@link HyphenatedToken}
+ */
 public record HyphenatedText(List<HyphenatedToken> hyphenatedTokens) {
 
     public static final String DEFAULT_TOKEN_SEPARATOR = " ";
 
     public static final String DEFAULT_SYLLABLE_SEPARATOR = "-";
 
+
+    /**
+     * @return String representation of hyphenated text. Tokens are separated by space, syllables by hyphen.
+     */
     public String read() {
         return read(DEFAULT_TOKEN_SEPARATOR, DEFAULT_SYLLABLE_SEPARATOR);
     }
 
+
+    /**
+     * @param tokenSeparator separator to be used between tokens
+     * @param syllableSeparator  separator to be used between syllables
+     * @return String representation of hyphenated text using given separators
+     */
     public String read(String tokenSeparator, String syllableSeparator) {
         return hyphenatedTokens.stream()
                 .map(token -> token.read(syllableSeparator))

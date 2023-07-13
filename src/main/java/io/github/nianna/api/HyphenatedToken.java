@@ -22,8 +22,17 @@ package io.github.nianna.api;
 
 import java.util.List;
 
+/**
+ * Representation of single hyphenated token.
+ *
+ * Contains list of indexes on which hyphenation should take place.
+ */
 public record HyphenatedToken(String token, List<Integer> hyphenIndexes) {
 
+    /**
+     * @param syllableSeparator separator to be used between syllables
+     * @return String representation of the hyphenated token
+     */
     public String read(String syllableSeparator) {
         StringBuilder builder = new StringBuilder();
         int lastIndex = 0;

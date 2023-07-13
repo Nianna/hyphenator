@@ -32,6 +32,11 @@ import java.util.stream.Stream;
 
 import static java.util.Objects.isNull;
 
+/**
+ * Determines the indexes at which hyphens should be placed in the given token.
+ *
+ * Hyphenation is based on patterns with priorities as described in Liang's thesis.
+ */
 public class HyphenIndexFinder {
 
     private final PatternCollection patternCollection;
@@ -43,6 +48,10 @@ public class HyphenIndexFinder {
         this.hyphenatorProperties = hyphenatorProperties;
     }
 
+    /**
+     * @param token single token to be hyphenated
+     * @return list of positions in which hyphens should be placed in the original token
+     */
     public List<Integer> findIndexes(String token) {
         int firstLetterIndex = getFirstLetterIndex(token);
         int lastLetterIndex = getLastLetterIndex(token, firstLetterIndex);
@@ -60,7 +69,7 @@ public class HyphenIndexFinder {
         int maxPatternLength = patternCollection.getMaxPatternLength();
         Map<Integer, List<String>> matchedPatternsAtIndexes = matchedPatternsAtIndexes(normalizedToken, maxPatternLength);
         Map<Integer, Integer> maxPrioritiesAtIndexes = mergePriorities(matchedPatternsAtIndexes);
-        return getIndexesWithOddPriorities(token, maxPrioritiesAtIndexes);
+        return getIndexesWithOddPriorities(token.length(), maxPrioritiesAtIndexes);
     }
 
     private int getFirstLetterIndex(String word) {
@@ -79,6 +88,14 @@ public class HyphenIndexFinder {
         return lastLetterIndex;
     }
 
+    /**
+     * Computes the map of all matched patterns for each character index of the token.
+     * Skips indexes for which no patterns were matched.
+     *
+     * @param token token to be hyphenated
+     * @param maxPatternLength maximum length of patterns in the dictionary
+     * @return map with list of matched patterns for each index in the token
+     */
     private Map<Integer, List<String>> matchedPatternsAtIndexes(String token, int maxPatternLength) {
         Map<Integer, List<String>> result = new HashMap<>();
         for (int i = 0; i < token.length(); i++) {
@@ -98,6 +115,13 @@ public class HyphenIndexFinder {
         return result;
     }
 
+    /**
+     * Takes the map of all matched patterns beginning at the given index for each character of the token.
+     * Converts it into a map containing the max priority from all patterns that matched this part of token.
+     *
+     * @param matchedPatternsAtIndexes map with list of matched patterns for each index in the token
+     * @return map of max matched priority for each index
+     */
     private Map<Integer, Integer> mergePriorities(Map<Integer, List<String>> matchedPatternsAtIndexes) {
         return matchedPatternsAtIndexes.entrySet().stream()
                 .flatMap(entry ->
@@ -107,12 +131,22 @@ public class HyphenIndexFinder {
                 ).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, Math::max));
     }
 
-    private Stream<Integer> getIndexesWithOddPriorities(String token, Map<Integer, Integer> maxPrioritiesAtIndexes) {
+
+    /**
+     * Computes the stream of indexes after which hyphens should be placed in the original token.
+     *
+     * As per algorithm filters out indexes with even priorities and indexes that are too close to the start or end of the token.
+     *
+     * @param tokenLength length of the token that is being hyphenated
+     * @param maxPrioritiesAtIndexes map of max matched priority for each index
+     * @return stream of indexes at which hyphens should be placed
+     */
+    private Stream<Integer> getIndexesWithOddPriorities(int tokenLength, Map<Integer, Integer> maxPrioritiesAtIndexes) {
         return maxPrioritiesAtIndexes.entrySet().stream()
                 .filter(entry -> Utils.isOdd(entry.getValue()))
                 .map(Map.Entry::getKey)
-                .filter(index -> index <= token.length() - hyphenatorProperties.getMinTrailingLength())
-                .filter(index -> index >= hyphenatorProperties.getMinLeadingLength());
+                .filter(index -> index <= tokenLength - hyphenatorProperties.minTrailingLength())
+                .filter(index -> index >= hyphenatorProperties.minLeadingLength());
     }
 
     private List<String> append(List<String> collector, String newValue) {

@@ -10,16 +10,18 @@ Hyphenation preserves the case of the original text and hyphenates words with no
 
 
 ## Requirements
-To use this tool, you need to have a hyphenation pattern dictionary for the desired language which can be downloaded e.g. from [LibreOffice repositories](https://github.com/LibreOffice/dictionaries).
-Find the file with "hyph" prefix e.g. hyph_pl_PL.dic for Polish language.
+To use this tool, you need a hyphenation pattern dictionary for the desired language.
+It can be downloaded from [TeX hyphenation repository](https://github.com/hyphenation/tex-hyphen/tree/master/hyph-utf8/tex/generic/hyph-utf8/patterns/txt).
+Choose the *.pat.txt file.
 
-## Hyph dic file format
-Hyph dictionaries contain metadata followed by a list of patterns. Make sure to pass only the patterns themselves when creating _Hyphenator_ instance.
+Alternatively, you can download the dictionary e.g. from [LibreOffice repositories](https://github.com/LibreOffice/dictionaries).
+In this case choose file with "hyph" prefix e.g. hyph_pl_PL.dic for Polish language. 
+Make sure to remove the tags at the beginning of the file and only pass the patterns themselves to the _Hyphenator_.
 ```
 UTF-8  <---- encoding info, use it to load file
-LEFTHYPHENMIN 2  <------ minimium prefix length, the value can be passed to the Hyphenator in HyphenatorProperties
-RIGHTHYPHENMIN 2  <------ minimium suffix length, the value can be passed to the Hyphenator in HyphenatorProperties
-.ć8    <--- example pattern
+LEFTHYPHENMIN 2  <------ this value can be passed to the Hyphenator as minLeadingLength
+RIGHTHYPHENMIN 2  <------ this value can be passed to the Hyphenator as minTralingLength
+.ć8    <--- pattern
 .4ć3ć8
 .ćł8
 .2ć1ń8
@@ -28,7 +30,9 @@ RIGHTHYPHENMIN 2  <------ minimium suffix length, the value can be passed to the
 ## Example usage
 
 ### Using defaults
-By default input text is automatically split into tokens. After hyphenation each word's prefix and suffix must be at least 2 characters long. Space is used as word separator and hyphen as syllables separator.
+Input text is automatically split into tokens. 
+By default the first and last chunk after hyphenation must be at least 2 characters long.
+Space is used as word separator and hyphen as syllables separator.
 ```
 List<String> patterns = ... // load the patterns from hyph dictionary file
 Hyphenator hyphenator = new Hyphenator(patterns);
@@ -47,8 +51,11 @@ System.out.println(hyphenatedText); // prints "Test-ing"
 System.out.println(result.hyphenIndexes()); // prints [4]
 ```
 
-### Customizing minimum prefix and suffix lengths
-To customize minimum prefix and suffix length pass custom _HyphenatorProperties_ when creating _Hyphenator_ instance.
+### Customizing hyphenation
+To skip some hyphens you can specify the following properties while creating _Hyphenator_ instance.
+ * minLeadingLength (default: 2) - hyphen can be placed only after first _minLeadingLength_ characters 
+ * minTrailingLength (default: 2) - hyphen can be placed only before last _minTrailingLength_ characters
+
 ```
 List<String> patterns = ... // load the patterns from hyph dictionary file
 HyphenatorProperties properties = new HyphenatorProperties(3, 4);

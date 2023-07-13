@@ -93,8 +93,8 @@ public class HyphenIndexFinder {
         return maxPrioritiesAtIndexes.entrySet().stream()
                 .filter(entry -> isOdd(entry.getValue()))
                 .map(Map.Entry::getKey)
-                .filter(index -> index <= token.length() - hyphenatorProperties.getMinSuffixLength())
-                .filter(index -> index >= hyphenatorProperties.getMinPrefixLength());
+                .filter(index -> index <= token.length() - hyphenatorProperties.getMinTrailingLength())
+                .filter(index -> index >= hyphenatorProperties.getMinLeadingLength());
     }
 
     private List<String> append(List<String> collector, String newValue) {

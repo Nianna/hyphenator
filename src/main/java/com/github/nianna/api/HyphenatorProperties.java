@@ -4,31 +4,31 @@ import static com.github.nianna.internal.Utils.checkArgument;
 
 public class HyphenatorProperties {
 
-    public static int DEFAULT_MIN_PREFIX_LENGTH = 2;
+    public static int DEFAULT_MIN_LEADING_LENGTH = 2;
 
-    public static int DEFAULT_MIN_SUFFIX_LENGTH = 2;
+    public static int DEFAULT_MIN_TRAILING_LENGTH = 2;
 
-    private final int minPrefixLength;
+    private final int minLeadingLength;
 
-    private final int minSuffixLength;
+    private final int minTrailingLength;
 
-    public HyphenatorProperties(int minPrefixLength, int minSuffixLength) {
-        checkArgument(minPrefixLength > 0, "Prefix must be at least 1 character long");
-        checkArgument(minSuffixLength > 0, "Suffix must be at least 1 character long");
-        this.minPrefixLength = minPrefixLength;
-        this.minSuffixLength = minSuffixLength;
+    public HyphenatorProperties(int minLeadingLength, int minTrailingLength) {
+        checkArgument(minLeadingLength > 0, "Min leading length must be at least 1");
+        checkArgument(minTrailingLength > 0, "Min trailing length must be at least 1");
+        this.minLeadingLength = minLeadingLength;
+        this.minTrailingLength = minTrailingLength;
     }
 
     public HyphenatorProperties() {
-        this(DEFAULT_MIN_PREFIX_LENGTH, DEFAULT_MIN_SUFFIX_LENGTH);
+        this(DEFAULT_MIN_LEADING_LENGTH, DEFAULT_MIN_TRAILING_LENGTH);
     }
 
-    public int getMinPrefixLength() {
-        return minPrefixLength;
+    public int getMinLeadingLength() {
+        return minLeadingLength;
     }
 
-    public int getMinSuffixLength() {
-        return minSuffixLength;
+    public int getMinTrailingLength() {
+        return minTrailingLength;
     }
 
 }

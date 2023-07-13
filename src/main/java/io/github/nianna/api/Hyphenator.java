@@ -1,13 +1,12 @@
-package com.github.nianna.api;
+package io.github.nianna.api;
 
-import com.github.nianna.internal.HyphenIndexFinder;
+import io.github.nianna.internal.HyphenIndexFinder;
+import io.github.nianna.internal.Utils;
 
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-import static com.github.nianna.internal.Utils.checkArgument;
-import static com.github.nianna.internal.Utils.isNotEmpty;
 import static java.util.Objects.nonNull;
 
 public class Hyphenator {
@@ -27,9 +26,9 @@ public class Hyphenator {
     }
 
     public Hyphenator(List<String> patterns, HyphenatorProperties hyphenatorProperties, String tokenSeparator) {
-        checkArgument(nonNull(hyphenatorProperties), "Properties can not be null");
+        Utils.checkArgument(nonNull(hyphenatorProperties), "Properties can not be null");
         hyphenIndexFinder = new HyphenIndexFinder(patterns, hyphenatorProperties);
-        checkArgument(isNotEmpty(tokenSeparator), "Token separator can not be empty");
+        Utils.checkArgument(Utils.isNotEmpty(tokenSeparator), "Token separator can not be empty");
         this.tokenSeparatorPattern = Pattern.quote(tokenSeparator);
     }
 

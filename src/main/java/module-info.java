@@ -1,3 +1,3 @@
 module nianna.hyphenator {
-    exports com.github.nianna.api;
+    exports io.github.nianna.api;
 }

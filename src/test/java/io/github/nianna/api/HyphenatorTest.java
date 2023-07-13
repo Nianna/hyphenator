@@ -1,6 +1,6 @@
-package com.github.nianna.api;
+package io.github.nianna.api;
 
-import com.github.nianna.TestUtil;
+import io.github.nianna.TestUtil;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

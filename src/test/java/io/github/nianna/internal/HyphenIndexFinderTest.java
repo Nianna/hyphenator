@@ -1,7 +1,7 @@
-package com.github.nianna.internal;
+package io.github.nianna.internal;
 
-import com.github.nianna.TestUtil;
-import com.github.nianna.api.HyphenatorProperties;
+import io.github.nianna.TestUtil;
+import io.github.nianna.api.HyphenatorProperties;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

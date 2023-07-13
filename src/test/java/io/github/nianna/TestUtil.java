@@ -1,4 +1,4 @@
-package com.github.nianna;
+package io.github.nianna;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

@@ -1,4 +1,4 @@
-package com.github.nianna.internal;
+package io.github.nianna.internal;
 
 import org.junit.jupiter.api.Test;
 

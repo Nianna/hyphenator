@@ -1,6 +1,6 @@
-package com.github.nianna.internal;
+package io.github.nianna.internal;
 
-import com.github.nianna.api.HyphenatorProperties;
+import io.github.nianna.api.HyphenatorProperties;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,8 +10,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.github.nianna.internal.Utils.isAlphabetic;
-import static com.github.nianna.internal.Utils.isOdd;
 import static java.util.Objects.isNull;
 
 public class HyphenIndexFinder {
@@ -29,7 +27,7 @@ public class HyphenIndexFinder {
         int firstLetterIndex = getFirstLetterIndex(token);
         int lastLetterIndex = getLastLetterIndex(token, firstLetterIndex);
         String actualToken = token.substring(firstLetterIndex, lastLetterIndex + 1);
-        if (actualToken.isBlank() | !isAlphabetic(actualToken)) {
+        if (actualToken.isBlank() | !Utils.isAlphabetic(actualToken)) {
             return List.of();
         }
         return doFindIndexes(actualToken)
@@ -91,7 +89,7 @@ public class HyphenIndexFinder {
 
     private Stream<Integer> getIndexesWithOddPriorities(String token, Map<Integer, Integer> maxPrioritiesAtIndexes) {
         return maxPrioritiesAtIndexes.entrySet().stream()
-                .filter(entry -> isOdd(entry.getValue()))
+                .filter(entry -> Utils.isOdd(entry.getValue()))
                 .map(Map.Entry::getKey)
                 .filter(index -> index <= token.length() - hyphenatorProperties.getMinTrailingLength())
                 .filter(index -> index >= hyphenatorProperties.getMinLeadingLength());

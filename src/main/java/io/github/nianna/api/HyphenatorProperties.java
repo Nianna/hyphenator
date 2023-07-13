@@ -1,6 +1,6 @@
-package com.github.nianna.api;
+package io.github.nianna.api;
 
-import static com.github.nianna.internal.Utils.checkArgument;
+import io.github.nianna.internal.Utils;
 
 public class HyphenatorProperties {
 
@@ -13,8 +13,8 @@ public class HyphenatorProperties {
     private final int minTrailingLength;
 
     public HyphenatorProperties(int minLeadingLength, int minTrailingLength) {
-        checkArgument(minLeadingLength > 0, "Min leading length must be at least 1");
-        checkArgument(minTrailingLength > 0, "Min trailing length must be at least 1");
+        Utils.checkArgument(minLeadingLength > 0, "Min leading length must be at least 1");
+        Utils.checkArgument(minTrailingLength > 0, "Min trailing length must be at least 1");
         this.minLeadingLength = minLeadingLength;
         this.minTrailingLength = minTrailingLength;
     }

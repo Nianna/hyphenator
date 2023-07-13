@@ -1,4 +1,4 @@
-package com.github.nianna.api;
+package io.github.nianna.api;
 
 import java.util.List;
 

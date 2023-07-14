@@ -46,21 +46,20 @@ Library is published to maven central and can be added to your project in the st
 Input text is automatically split into tokens. 
 By default the first and last chunk after hyphenation must be at least 2 characters long.
 Space is used as word separator and hyphen as syllables separator.
-```
+```java
 List<String> patterns = ... // load the patterns from the patterns file
 Hyphenator hyphenator = new Hyphenator(patterns);
 
 HyphenatedText result = hyphenator.hyphenateText("Testing (automatic) HyPHeNAtioN by computer!");
 
-String hyphenatedText = result.read();
-System.out.println(hyphenatedText); // prints "Test-ing (au-to-mat-ic) Hy-PHeN-AtioN by com-put-er!"
+System.out.println(result.read()); // prints "Test-ing (au-to-mat-ic) Hy-PHeN-AtioN by com-put-er!"
 ```
 
 You can also hyphenate a single token:
-```
+```java
 HyphenatedToken result = hyphenator.hyphenateToken("Testing");
-String hyphenatedText = result.read("-");
-System.out.println(hyphenatedText); // prints "Test-ing"
+
+System.out.println(result.read("-")); // prints "Test-ing"
 System.out.println(result.hyphenIndexes()); // prints [4]
 ```
 
@@ -69,32 +68,30 @@ To skip some hyphens you can specify the following properties while creating _Hy
  * minLeadingLength (default: 2) - hyphen can be placed only after first _minLeadingLength_ characters 
  * minTrailingLength (default: 2) - hyphen can be placed only before last _minTrailingLength_ characters
 
-```
+```java
 List<String> patterns = ... // load the patterns from the patterns file
 HyphenatorProperties properties = new HyphenatorProperties(3, 4);
 Hyphenator hyphenator = new Hyphenator(patterns, properties);
 
 HyphenatedText result = hyphenator.hyphenateText("Testing (automatic) HyPHeNAtioN by computer!");
 
-String hyphenatedText = result.read();
-System.out.println(hyphenatedText); // prints "Testing (auto-matic) HyPHeN-AtioN by com-puter!"
+System.out.println(result.read()); // prints "Testing (auto-matic) HyPHeN-AtioN by com-puter!"
 ```
 
 ### Customizing input word separator
 To customize the separator on which text is supposed to be split into tokens pass the _tokenSeparator_ argument to the _Hyphenator_.
-```
+```java
 List<String> patterns = ... // load the patterns from the patterns file
 Hyphenator hyphenator = new Hyphenator(patterns, new HyphenatorProperties(), "|");
 
 HyphenatedText result = hyphenator.hyphenateText("Testing|(automatic)|HyPHeNAtioN|by|computer!");
 
-String hyphenatedText = result.read();
-System.out.println(hyphenatedText); // prints "Test-ing (au-to-mat-ic) Hy-PHeN-AtioN by com-put-er!"
+System.out.println(result.read()); // prints "Test-ing (au-to-mat-ic) Hy-PHeN-AtioN by com-put-er!"
 ```
 
 ### Customizing output
 To customize the word or syllables separator used for creating hyphenated text pass arguments to _HyphenatedText::read_ method.
-```
+```java
 List<String> patterns = ... // load the patterns from the patterns file
 Hyphenator hyphenator = new Hyphenator(patterns);
 

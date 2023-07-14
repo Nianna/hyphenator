@@ -30,10 +30,15 @@ import java.util.stream.Collectors;
  */
 public record HyphenatedText(List<HyphenatedToken> hyphenatedTokens) {
 
+    /**
+     * Default separator used between tokens
+     */
     public static final String DEFAULT_TOKEN_SEPARATOR = " ";
 
+    /**
+     * Default separator used between syllables of a single token
+     */
     public static final String DEFAULT_SYLLABLE_SEPARATOR = "-";
-
 
     /**
      * @return String representation of hyphenated text. Tokens are separated by space, syllables by hyphen.
@@ -41,7 +46,6 @@ public record HyphenatedText(List<HyphenatedToken> hyphenatedTokens) {
     public String read() {
         return read(DEFAULT_TOKEN_SEPARATOR, DEFAULT_SYLLABLE_SEPARATOR);
     }
-
 
     /**
      * @param tokenSeparator separator to be used between tokens

@@ -24,8 +24,14 @@ import io.github.nianna.internal.Utils;
 
 public record HyphenatorProperties(int minLeadingLength, int minTrailingLength) {
 
+    /**
+     * Default minimum number of characters before the first hyphen
+     */
     public static int DEFAULT_MIN_LEADING_LENGTH = 2;
 
+    /**
+     * Default minimum number of characters after the last hyphen
+     */
     public static int DEFAULT_MIN_TRAILING_LENGTH = 2;
 
     /**

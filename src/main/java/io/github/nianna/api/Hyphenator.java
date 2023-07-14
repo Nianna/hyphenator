@@ -34,16 +34,26 @@ import static java.util.Objects.nonNull;
  */
 public class Hyphenator {
 
+    /**
+     * Default separator used for splitting text into tokens
+     */
     public static final String DEFAULT_TOKEN_SEPARATOR = " ";
 
     private final HyphenIndexFinder hyphenIndexFinder;
 
     private final String tokenSeparatorPattern;
 
+    /**
+     * @param patterns list of TeX patterns to be used for hyphenation
+     */
     public Hyphenator(List<String> patterns) {
         this(patterns, new HyphenatorProperties());
     }
 
+    /**
+     * @param patterns list of TeX patterns to be used for hyphenation
+     * @param hyphenatorProperties hyphenator configuration
+     */
     public Hyphenator(List<String> patterns, HyphenatorProperties hyphenatorProperties) {
         this(patterns, hyphenatorProperties, DEFAULT_TOKEN_SEPARATOR);
     }
@@ -62,6 +72,9 @@ public class Hyphenator {
 
     /**
      * Splits the given text into tokens and hyphenates it.
+     *
+     * @param text text to be hyphenated
+     * @return representation of hyphenated text
      */
     public HyphenatedText hyphenateText(String text) {
         List<HyphenatedToken> hyphenatedTokens = tokenize(text)
@@ -72,6 +85,8 @@ public class Hyphenator {
 
     /**
      * Hyphenates the given token as it is.
+     * @param token token to be hyphenated
+     * @return representation of hyphenated token
      */
     public HyphenatedToken hyphenateToken(String token) {
         List<Integer> hyphenationIndexes = hyphenIndexFinder.findIndexes(token);

@@ -4,17 +4,16 @@
 
 # hyphenator
 
-Simple implementation of text hyphenation using approach described in Franklin Mark Liang's thesis "Word Hy-phen-a-tion by Com-put-er".
+Simple implementation of text hyphenation using pattern approach described in Franklin Mark Liang's thesis "Word Hy-phen-a-tion by Com-put-er".
 
-Hyphenation preserves the case of the original text and hyphenates words with non-alphabetic characters as long as they are placed only at the beginning or the end of each word.
-
+_Hyphenator_ preserves the case of the original text and hyphenates words with non-alphabetic characters as long as they are not placed in the middle of the words.
 
 ## Requirements
-To use this tool, you need a hyphenation pattern dictionary for the desired language.
+To use this tool you need a list of hyphenation patterns for the desired language.
 It can be downloaded from [TeX hyphenation repository](https://github.com/hyphenation/tex-hyphen/tree/master/hyph-utf8/tex/generic/hyph-utf8/patterns/txt).
 Choose the *.pat.txt file.
 
-Alternatively, you can download the dictionary e.g. from [LibreOffice repositories](https://github.com/LibreOffice/dictionaries).
+Alternatively, you can download a dictionary file e.g. from [LibreOffice repositories](https://github.com/LibreOffice/dictionaries).
 In this case choose file with "hyph" prefix e.g. hyph_pl_PL.dic for Polish language. 
 Make sure to remove the tags at the beginning of the file and only pass the patterns themselves to the _Hyphenator_.
 ```
@@ -29,12 +28,26 @@ RIGHTHYPHENMIN 2  <------ this value can be passed to the Hyphenator as minTrali
 
 ## Example usage
 
-### Using defaults
+### Adding dependency
+Library is published to maven central and can be added to your project in the standard way:
+```
+<dependencies>
+  ...
+  <dependency>
+    <groupId>io.github.nianna</groupId>
+    <artifactId>hyphenator</artifactId>
+    <version>1.0.0</version>
+  </dependency>
+
+</dependencies>
+```
+
+### Hyphenation with default settings
 Input text is automatically split into tokens. 
 By default the first and last chunk after hyphenation must be at least 2 characters long.
 Space is used as word separator and hyphen as syllables separator.
 ```
-List<String> patterns = ... // load the patterns from hyph dictionary file
+List<String> patterns = ... // load the patterns from the patterns file
 Hyphenator hyphenator = new Hyphenator(patterns);
 
 HyphenatedText result = hyphenator.hyphenateText("Testing (automatic) HyPHeNAtioN by computer!");
@@ -57,7 +70,7 @@ To skip some hyphens you can specify the following properties while creating _Hy
  * minTrailingLength (default: 2) - hyphen can be placed only before last _minTrailingLength_ characters
 
 ```
-List<String> patterns = ... // load the patterns from hyph dictionary file
+List<String> patterns = ... // load the patterns from the patterns file
 HyphenatorProperties properties = new HyphenatorProperties(3, 4);
 Hyphenator hyphenator = new Hyphenator(patterns, properties);
 
@@ -70,7 +83,7 @@ System.out.println(hyphenatedText); // prints "Testing (auto-matic) HyPHeN-AtioN
 ### Customizing input word separator
 To customize the separator on which text is supposed to be split into tokens pass the _tokenSeparator_ argument to the _Hyphenator_.
 ```
-List<String> patterns = ... // load the patterns from hyph dictionary file
+List<String> patterns = ... // load the patterns from the patterns file
 Hyphenator hyphenator = new Hyphenator(patterns, new HyphenatorProperties(), "|");
 
 HyphenatedText result = hyphenator.hyphenateText("Testing|(automatic)|HyPHeNAtioN|by|computer!");
@@ -82,7 +95,7 @@ System.out.println(hyphenatedText); // prints "Test-ing (au-to-mat-ic) Hy-PHeN-A
 ### Customizing output
 To customize the word or syllables separator used for creating hyphenated text pass arguments to _HyphenatedText::read_ method.
 ```
-List<String> patterns = ... // load the patterns from hyph dictionary file
+List<String> patterns = ... // load the patterns from the patterns file
 Hyphenator hyphenator = new Hyphenator(patterns);
 
 HyphenatedText result = hyphenator.hyphenateText("Testing (automatic) HyPHeNAtioN by computer!");

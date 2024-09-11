@@ -38,4 +38,14 @@ public class TestUtil {
         }
     }
 
+    public static List<String> loadDaPatterns() {
+        try {
+            Path patternsPath = Path.of(TestUtil.class.getResource("/hyph_da_DK.dic").toURI());
+            return Files.readAllLines(patternsPath);
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
 }

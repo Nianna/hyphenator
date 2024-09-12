@@ -36,7 +36,7 @@ Library is published to maven central and can be added to your project in the st
   <dependency>
     <groupId>io.github.nianna</groupId>
     <artifactId>hyphenator</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
   </dependency>
 
 </dependencies>

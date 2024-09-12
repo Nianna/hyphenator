@@ -70,6 +70,14 @@ class HyphenIndexFinderTest {
     }
 
     @Test
+    void shouldHyphenateReallyLongWordsInOrder() {
+        HyphenIndexFinder finder = new HyphenIndexFinder(TestUtil.loadDaPatterns(), hyphenatorProperties);
+        List<Integer> result = finder.findIndexes("Trafiksikkerhedskampagneplakat");
+        assertEquals(List.of(3, 6, 9, 12, 16, 22, 24, 27), result);
+        // Tra-fik-sik-ker-heds-kampag-ne-pla-kat
+    }
+
+    @Test
     void shouldReturnEmptyListIfWordIsNotAlphabetic() {
         HyphenIndexFinder finder = new HyphenIndexFinder(List.of(), hyphenatorProperties);
         List<Integer> result = finder.findIndexes("(456)");

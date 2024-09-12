@@ -29,8 +29,16 @@ import java.util.List;
 public class TestUtil {
 
     public static List<String> loadPlPatterns() {
+        return loadPatterns("pl_PL");
+    }
+
+    public static List<String> loadDaPatterns() {
+        return loadPatterns("da_DK");
+    }
+
+    private static List<String> loadPatterns(String tag) {
         try {
-            Path patternsPath = Path.of(TestUtil.class.getResource("/hyph_pl_PL.dic").toURI());
+            Path patternsPath = Path.of(TestUtil.class.getResource("/hyph_" + tag + ".dic").toURI());
             return Files.readAllLines(patternsPath);
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();

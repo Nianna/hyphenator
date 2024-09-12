@@ -22,11 +22,7 @@ package io.github.nianna.internal;
 
 import io.github.nianna.api.HyphenatorProperties;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -146,7 +142,8 @@ public class HyphenIndexFinder {
                 .filter(entry -> Utils.isOdd(entry.getValue()))
                 .map(Map.Entry::getKey)
                 .filter(index -> index <= tokenLength - hyphenatorProperties.minTrailingLength())
-                .filter(index -> index >= hyphenatorProperties.minLeadingLength());
+                .filter(index -> index >= hyphenatorProperties.minLeadingLength())
+                .sorted();
     }
 
     private List<String> append(List<String> collector, String newValue) {

@@ -41,8 +41,6 @@ public class Hyphenator {
 
     private final HyphenIndexFinder hyphenIndexFinder;
 
-    private final String tokenSeparatorPattern;
-
     /**
      * @param patterns list of TeX patterns to be used for hyphenation
      */
@@ -67,17 +65,28 @@ public class Hyphenator {
         Utils.checkArgument(nonNull(hyphenatorProperties), "Properties can not be null");
         hyphenIndexFinder = new HyphenIndexFinder(patterns, hyphenatorProperties);
         Utils.checkArgument(Utils.isNotEmpty(tokenSeparator), "Token separator can not be empty");
-        this.tokenSeparatorPattern = Pattern.quote(tokenSeparator);
     }
 
     /**
-     * Splits the given text into tokens and hyphenates it.
+     * Splits the given text into tokens on spaces and hyphenates it.
      *
      * @param text text to be hyphenated
      * @return representation of hyphenated text
      */
     public HyphenatedText hyphenateText(String text) {
-        List<HyphenatedToken> hyphenatedTokens = tokenize(text)
+        return hyphenateText(text, DEFAULT_TOKEN_SEPARATOR);
+    }
+
+
+    /**
+     * Splits the given text into tokens on specified separator and hyphenates it.
+     *
+     * @param text text to be hyphenated
+     * @param tokenSeparator separator used to split text into tokens
+     * @return representation of hyphenated text
+     */
+    public HyphenatedText hyphenateText(String text, String tokenSeparator) {
+        List<HyphenatedToken> hyphenatedTokens = tokenize(text, tokenSeparator)
                 .map(this::hyphenateToken)
                 .toList();
         return new HyphenatedText(hyphenatedTokens);
@@ -93,7 +102,8 @@ public class Hyphenator {
         return new HyphenatedToken(token, hyphenationIndexes);
     }
 
-    private Stream<String> tokenize(String text) {
+    private Stream<String> tokenize(String text, String tokenSeparator) {
+        String tokenSeparatorPattern = Pattern.quote(tokenSeparator);
         return Stream.of(text.split(tokenSeparatorPattern));
     }
 

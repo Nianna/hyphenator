@@ -88,8 +88,7 @@ class HyphenatorTest {
 
     @Test
     void shouldHyphenateMultiTokenTextWithCustomTokenSeparator() {
-        Hyphenator hyphenator = new Hyphenator(TestUtil.loadPlPatterns(), hyphenatorProperties, "|");
-        HyphenatedText result = hyphenator.hyphenateText("Aligator|był|bardzo|głodny");
+        HyphenatedText result = hyphenator.hyphenateText("Aligator|był|bardzo|głodny", "|");
         assertEquals("A-li-ga-tor był bar-dzo głod-ny", result.read());
         List<HyphenatedToken> tokens = result.hyphenatedTokens();
         assertEquals(4, tokens.size());

@@ -36,7 +36,7 @@ Library is published to maven central and can be added to your project in the st
   <dependency>
     <groupId>io.github.nianna</groupId>
     <artifactId>hyphenator</artifactId>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
   </dependency>
 
 </dependencies>
@@ -79,12 +79,12 @@ System.out.println(result.read()); // prints "Testing (auto-matic) HyPHeN-AtioN 
 ```
 
 ### Customizing input word separator
-To customize the separator on which text is supposed to be split into tokens pass the _tokenSeparator_ argument to the _Hyphenator_.
+To customize the separator on which text is supposed to be split into tokens pass the _tokenSeparator_ argument to the _Hyphenator::hyphenateText_ method.
 ```java
 List<String> patterns = ... // load the patterns from the patterns file
-Hyphenator hyphenator = new Hyphenator(patterns, new HyphenatorProperties(), "|");
+Hyphenator hyphenator = new Hyphenator(patterns);
 
-HyphenatedText result = hyphenator.hyphenateText("Testing|(automatic)|HyPHeNAtioN|by|computer!");
+HyphenatedText result = hyphenator.hyphenateText("Testing|(automatic)|HyPHeNAtioN|by|computer!", "|");
 
 System.out.println(result.read()); // prints "Test-ing (au-to-mat-ic) Hy-PHeN-AtioN by com-put-er!"
 ```
